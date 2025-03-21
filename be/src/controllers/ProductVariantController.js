@@ -66,31 +66,43 @@ let update = async (req, res, next) => {
             });
             if (!productVariant) return res.status(400).send('Product Variant này không tồn tại');
 
+            // Xóa ảnh cũ khỏi thư mục và database
+            for (let { image_id, path } of productVariant.Product_Images) {
+                let directoryPath = __basedir + '\\public\\images\\';
+                let fileName = path.split('/').pop();
+                try {
+                    fs.unlinkSync(directoryPath + fileName);
+                } catch (unlinkError) {
+                    console.log('Lỗi khi xóa ảnh:', unlinkError);
+                }
+                await Product_Image.destroy({ where: { image_id } });
+            }
+
+            // Thêm ảnh mới vào hệ thống
+            let newImages = [];
             for (let file of files) {
-                fileName = file.path.slice(-40, file.path.length)
-                let path = 'http://localhost:8080/static/images/' + fileName
-                await Product_Image.create({
-                    path,
+                let fileName = file.path.slice(-40, file.path.length);
+                let newPath = 'http://localhost:8080/static/images/' + fileName;
+                let newImage = await Product_Image.create({
+                    path: newPath,
                     product_variant_id
                 });
+                newImages.push(newImage.path);
             }
 
-            for (let { image_id, path } of productVariant.Product_Images) {
-                let directoryPath = __basedir + '\\public\\images\\'
-                let fileName = path.slice(-40, path.length)
-                fs.unlinkSync(directoryPath + fileName)
-                await Product_Image.destroy({ where: { image_id } })
-            }
+            await productVariant.update({ quantity });
 
-            await productVariant.update({ quantity })
-
-            return res.send({ message: "Cập nhật biến thể sản phẩm thành công!" })
+            return res.send({
+                message: "Cập nhật biến thể sản phẩm thành công!",
+                new_images: newImages
+            });
         } catch (err) {
             console.log(err);
             return res.status(500).send('Gặp lỗi khi tải dữ liệu vui lòng thử lại');
         }
-    })
-}
+    });
+};
+
 
 let onState = async (req, res, next) => {
     try {
