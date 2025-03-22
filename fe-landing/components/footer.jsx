@@ -37,7 +37,7 @@ const Footer = () => {
                     </div>
                     <div className="footer-social col-lg-4 row g-0 align-items-lg-center justify-content-lg-end mt-md-4 mt-lg-0 ps-lg-2">
                         <div className='social-icon col flex-lg-grow-0'>
-                            <a href='#'><Image src={'/img/footer/iconFacebook.png'} width={48} height={79} alt='icon-facebook' /></a>
+                            <a href='https://www.facebook.com/Yutenro.2003'><Image src={'/img/footer/iconFacebook.png'} width={48} height={79} alt='icon-facebook' /></a>
                         </div>
                         <div className='social-icon col flex-lg-grow-0 ms-lg-4'>
                             <a href='#'><Image src={'/img/footer/iconZalo.png'} width={76} height={91} alt='icon-zalo' /></a>
@@ -49,7 +49,7 @@ const Footer = () => {
                             <a href='#'><Image src={'/img/footer/iconInstargram.svg'} width={27} height={30} alt='icon-instargram' /></a>
                         </div>
                         <div className='social-icon col flex-lg-grow-0 ms-lg-4'>
-                            <a href='#'><Image src={'/img/footer/iconYoutube.svg'} width={34} height={30} alt='icon-youtube' /></a>
+                            <a href='https://www.youtube.com/@Yutenro'><Image src={'/img/footer/iconYoutube.svg'} width={34} height={30} alt='icon-youtube' /></a>
                         </div>
                     </div>
                 </div>

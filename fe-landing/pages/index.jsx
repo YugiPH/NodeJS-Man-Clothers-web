@@ -1,6 +1,7 @@
 import Slider from '@/components/slider';
 import { ArrowUpOutlined } from '@ant-design/icons';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function HomePage() {
     return (
@@ -19,7 +20,9 @@ export default function HomePage() {
                             chạy bộ chuyên nghiệp
                         </p>
                         <div>
-                            <button>Khám phá ngay</button>
+                            <Link href="http://localhost:3001/product/1?colour=7">
+                                <button>Khám phá ngay</button>
+                            </Link>
                         </div>
                     </div>
                     <div className="homepage-basic-right col-7 position-relative">
