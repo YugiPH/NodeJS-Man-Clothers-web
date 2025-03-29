@@ -25,16 +25,16 @@ const CartItem = (props) => {
                         <div className="position-absolute product-quantity">{quantity}</div>
                     </div>
                 </div>
-                <div className="cart-col-right col-9 d-flex flex-column justify-content-between">
-                    <div className="cart-item-info position-relative">
+                <div className="cart-col-right col-9 d-flex flex-column justify-content-between" >
+                    <div style={{ paddingLeft: 50 }} className="cart-item-info position-relative">
                         <div className="product-name">
-                            <p className="fw-bold">{name}</p>
+                            <p className="fw-bold" >{name}</p>
                         </div>
                         <CloseOutlined
                             className="cart-item-remove position-absolute"
                             onClick={() => removeItem(productVariantId)}
                         />
-                        <div className="orther-info">
+                        <div className="orther-info" >
                             <p>{`${colour} / ${size}`}</p>
                         </div>
                         <div className="cart-item-action">
