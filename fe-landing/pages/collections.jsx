@@ -10,8 +10,10 @@ const CollectionPage = () => {
     const { category } = router.query;
 
     const { isError, error, data } = useQuery(queries.products.list(category));
+
     if (isError) console.log(error);
     const productList = data?.data;
+    console.log(productList);
 
     return (
         <div className="product-page container pt-4">
@@ -26,6 +28,7 @@ const CollectionPage = () => {
                                 img={product.product_image}
                                 price={product.price}
                                 colour_id={product.colour_id}
+                                colour_name={product.colour_name}
                                 sizes={product.sizes}
                                 rating={product.rating}
                                 feedback_quantity={product.feedback_quantity}

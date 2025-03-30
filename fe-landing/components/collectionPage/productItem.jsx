@@ -46,6 +46,7 @@ const ProductItem = (props) => {
                     }}
                 >
                     <h6>{props.name}</h6>
+                    <h6>{props.colour_name}</h6>
                 </Link>
                 <div className="d-flex justify-content-start">
                     <p className="price-after text-danger fw-bold">{props.price}đ</p>

@@ -8,7 +8,8 @@ const Category = sequelize.define('Category', {
     level: { type: DataTypes.INTEGER, defaultValue: 1 },
     parent_id: { type: DataTypes.INTEGER, defaultValue: null },
 }, {
-    timestamps : false
+    tableName: 'categories',
+    timestamps: false
 })
 
 module.exports = Category;
