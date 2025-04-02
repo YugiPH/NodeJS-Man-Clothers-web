@@ -11,6 +11,7 @@ import customerService from '@/services/customerService';
 import useCustomerStore from '@/store/customerStore';
 import Login from './login';
 import Register from './register';
+import SearchBar from './searchBar';
 
 const Header = () => {
     const [isLogInOpen, setIsLogInOpen] = useState(false);
@@ -101,6 +102,8 @@ const Header = () => {
                             );
                         })}
                 </ul>
+                
+                <SearchBar/>
 
                 <ul className="header-inner p-2 ms-auto">
                     {!isLoggedIn ? (

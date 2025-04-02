@@ -1,0 +1,35 @@
+.search-container {
+    display: flex;
+    align-items: center;
+    background: #f5f5f5;
+    border-radius: 25px;
+    padding: 5px 15px;
+    width: 300px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+    input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        outline: none;
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    button {
+        background: #007bff;
+        border: none;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            background: #0056b3;
+        }
+    }
+}
