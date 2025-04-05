@@ -15,6 +15,10 @@ const orderService = {
         return await axiosJWT.post('/order/create', data);
     },
 
+    payment: async (data) => {
+        return await axiosJWT.post('/payment/create', data);
+    },
+
     cancelOrder: async (orderId) => {
         return await axiosClient.put(`/order/change-status/${orderId}/5`);
     },

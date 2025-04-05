@@ -9,6 +9,7 @@ const productRouter = require('./product');
 const product_variantRouter = require('./product_variant');
 const order = require('./order');
 const feedback = require('./feedback');
+const paymentRouter = require('./payment')
 
 function setRoute(server) {
 
@@ -29,6 +30,8 @@ function setRoute(server) {
     server.use('/api/order', order);
 
     server.use('/api/feedback', feedback);
+
+    server.use('/api/payment', paymentRouter)
 
 }
 

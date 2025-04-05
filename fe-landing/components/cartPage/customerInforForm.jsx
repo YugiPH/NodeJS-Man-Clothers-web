@@ -1,13 +1,13 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Radio } from 'antd';
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FaShippingFast } from 'react-icons/fa';
 import { object, string } from 'yup';
 
 import InputField from '@/components/inputField';
+import PaymentMethod from "../paymentMethod";
 
-const CustomerInforForm = ({ email = '', customerName = '', phoneNumber = '', address = '', handlePlaceOrder }) => {
+const CustomerInforForm = ({ email = '', customerName = '', phoneNumber = '', address = '', paymentMethod = 'cod', handlePlaceOrder }) => {
     const schema = object({
         customerName: string()
             .trim()
@@ -26,13 +26,17 @@ const CustomerInforForm = ({ email = '', customerName = '', phoneNumber = '', ad
             .trim()
             .required('Vui lòng nhập Địa chỉ của bạn')
             .max(255, 'Địa chỉ không được vượt quá 255 ký tự'),
+        paymentMethod: string()
+            .required('Vui lòng chọn phương thức thanh toán'),
+
     });
     const { control, handleSubmit, formState: { isSubmitting } } = useForm({
         defaultValues: {
             email,
             customerName,
             phoneNumber,
-            address
+            address,
+            paymentMethod
         },
         resolver: yupResolver(schema),
     });
@@ -54,23 +58,7 @@ const CustomerInforForm = ({ email = '', customerName = '', phoneNumber = '', ad
             </div>
             <div className="payment">
                 <div className="title">Hình thức thanh toán</div>
-                <div>
-                    <label
-                        htmlFor=""
-                        className="payment-item w-100 border-radius d-flex align-items-center justify-content-start"
-                    >
-                        <div className="payment-item-radio">
-                            <Radio checked></Radio>
-                        </div>
-                        <div className="payment-item-icon">
-                            <FaShippingFast />
-                        </div>
-                        <div className="payment-item-name">
-                            <p className="text-uppercase">cod</p>
-                            <p className="">Thanh toán khi nhận hàng</p>
-                        </div>
-                    </label>
-                </div>
+                <PaymentMethod control={control} />
             </div>
             <div className={'btn-container' + (isSubmitting ? ' btn-loading' : '')}>
                 <Button htmlType='submit' loading={isSubmitting}>

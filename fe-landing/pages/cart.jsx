@@ -55,9 +55,14 @@ const CartPage = () => {
                     address: values.address,
                     order_items: orderItems
                 };
-                await orderService.placeOrder(order);
+                // await orderService.placeOrder(order);
+
+                const { data } = await orderService.payment(order);
+                if (data) {
+                    router.push(data.url)
+                }
                 clearCart();
-                swtoast.success({ text: 'Đặt hàng thành công' });
+                // swtoast.success({ text: 'Đặt hàng thành công' });
             } catch (err) {
                 console.log(err);
                 swtoast.error({
