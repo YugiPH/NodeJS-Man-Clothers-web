@@ -9,12 +9,14 @@ import { formatPrice } from '@/helpers/format';
 import orderService from '@/services/orderService';
 import useCartStore from '@/store/cartStore';
 import { useRouter } from 'next/router';
+import { usePayment } from '@/context/PaymentContext';
 
 const CartPage = () => {
     const router = useRouter();
     const productList = useCartStore((state) => state.productList);
     const productQuantity = productList.length;
     const clearCart = useCartStore((state) => state.clearCart);
+    const { paymentMethod } = usePayment();
 
     const { isError, error, data } = useQuery({
         ...queries.customer.infor(),
@@ -35,8 +37,8 @@ const CartPage = () => {
         return productList.reduce((accumulator, product) => accumulator + product.totalValue, 0);
     }, [productList]);
     const deliveryCharges = useMemo(() => {
-        return productQuantity ? 20000 : 0;
-    }, [productQuantity]);
+        return productQuantity && paymentMethod === 'cod' ? 20000 : 0;
+    }, [productQuantity, paymentMethod]);
     const finalTotal = totalPrice + deliveryCharges;
 
     const handlePlaceOrder = useCallback(async (values) => {
@@ -55,19 +57,28 @@ const CartPage = () => {
                     address: values.address,
                     order_items: orderItems
                 };
-                // await orderService.placeOrder(order);
 
-                const { data } = await orderService.payment(order);
-                if (data) {
-                    router.push(data.url)
+                if (values.paymentMethod === "cod") {
+                    const { data } = await orderService.placeOrder(order);
+                    if (data) {
+                        swtoast.success({ text: 'Đặt hàng thành công' });
+                    }
                 }
-                clearCart();
-                // swtoast.success({ text: 'Đặt hàng thành công' });
+                else {
+                    const { data } = await orderService.payment(order);
+                    if (data) {
+                        router.push(data.url)
+                    }
+                }
+
             } catch (err) {
                 console.log(err);
                 swtoast.error({
                     text: 'Có lỗi khi tạo đơn hàng vui lòng thử lại!'
                 });
+            }
+            finally {
+                clearCart()
             }
         } else {
             swtoast.error({
@@ -135,6 +146,7 @@ const CartPage = () => {
         </div>
     );
 };
+
 
 CartPage.isAuth = true;
 

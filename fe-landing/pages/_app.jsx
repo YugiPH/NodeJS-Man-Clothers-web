@@ -7,6 +7,7 @@ import React from 'react';
 import Auth from '@/components/auth';
 import Layout from '@/components/layout';
 import '@/styles/globals.scss';
+import { PaymentProvider } from '@/context/PaymentContext';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -27,7 +28,9 @@ const App = ({ Component, pageProps }) => {
             </Head>
             <AuthComponent>
                 <Layout>
+                <PaymentProvider>
                     <Component {...pageProps} />
+                </PaymentProvider>
                 </Layout>
             </AuthComponent>
             <ReactQueryDevtools initialIsOpen={false} />

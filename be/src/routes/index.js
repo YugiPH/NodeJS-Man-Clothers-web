@@ -10,6 +10,7 @@ const product_variantRouter = require('./product_variant');
 const order = require('./order');
 const feedback = require('./feedback');
 const paymentRouter = require('./payment')
+const webhookRouter = require('./webhooks')
 
 function setRoute(server) {
 
@@ -33,6 +34,7 @@ function setRoute(server) {
 
     server.use('/api/payment', paymentRouter)
 
+    server.use('/api/webhook', webhookRouter)
 }
 
 module.exports = setRoute;

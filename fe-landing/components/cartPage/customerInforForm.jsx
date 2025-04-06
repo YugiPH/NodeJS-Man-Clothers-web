@@ -6,8 +6,9 @@ import { object, string } from 'yup';
 
 import InputField from '@/components/inputField';
 import PaymentMethod from "../paymentMethod";
+import { usePayment } from "@/context/PaymentContext";
 
-const CustomerInforForm = ({ email = '', customerName = '', phoneNumber = '', address = '', paymentMethod = 'cod', handlePlaceOrder }) => {
+const CustomerInforForm = ({ email = '', customerName = '', phoneNumber = '', address = '', paymentMethod= "cod", handlePlaceOrder }) => {
     const schema = object({
         customerName: string()
             .trim()
@@ -30,6 +31,7 @@ const CustomerInforForm = ({ email = '', customerName = '', phoneNumber = '', ad
             .required('Vui lòng chọn phương thức thanh toán'),
 
     });
+
     const { control, handleSubmit, formState: { isSubmitting } } = useForm({
         defaultValues: {
             email,

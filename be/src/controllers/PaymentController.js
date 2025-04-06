@@ -45,79 +45,72 @@ let create = async (req, res, next) => {
         });
 
         let total_product_value = 0;
-        for (let i = 0; i < order_items.length; i++) {
-            let order_item = order_items[i];
-            let product_variant = await Product_Variant.findOne({
-                attributes: ['product_variant_id', 'quantity', 'state'],
-                include: [
-                    {
-                        model: Product, attributes: ['product_id'],
-                        include: { model: Product_Price_History, attributes: ['price'], separate: true, order: [['created_at', 'DESC']] }
-                    },
-                ],
-                where: { product_variant_id: order_item.product_variant_id }
-            });
-            if (product_variant == null)
-                return res.status(400).send("Sản phẩm này không tồn tại");
-            if (product_variant.state != true)
-                return res.status(400).send("Sản phẩm này chưa được mở bán");
-            if (order_item.quantity > product_variant.quantity)
-                return res.status(400).send("Số lượng sản phẩm không hợp lệ");
-
-            let productVariantPrice = product_variant.Product.Product_Price_Histories[0].price;
-            let total_value = productVariantPrice * order_item.quantity;
-            let newOrderItem = {
-                order_id: newOrder.order_id,
-                product_variant_id: product_variant.product_variant_id,
-                order_item_index: i,
-                price: productVariantPrice,
-                quantity: order_item.quantity,
-                total_value
-            }
-
-            await Order_Item.create(newOrderItem);
-            newProductVariantQuantity = product_variant.quantity - order_item.quantity;
-            product_variant.update({ quantity: newProductVariantQuantity });
-            total_product_value += total_value;
-        }
-
-        let delivery_charges = 20000
-        let total_order_value = total_product_value + delivery_charges;
-
-        newOrder.update({ total_product_value, delivery_charges, total_order_value });
 
         let line_items = [];
 
         for (let i = 0; i < order_items.length; i++) {
             let order_item = order_items[i];
             let product_variant = await Product_Variant.findOne({
+                attributes: ['product_variant_id', 'quantity', 'state'],
                 include: [
                     {
-                        model: Product,
-                        attributes: ['product_name'],
+                        model: Product, attributes: ['product_id', 'product_name'],
+                        include: {
+                            model: Product_Price_History,
+                            attributes: ['price'],
+                            separate: true,
+                            order: [['created_at', 'DESC']]
+                        }
                     },
                 ],
-                where: { product_variant_id: order_item.product_variant_id },
+                where: { product_variant_id: order_item.product_variant_id }
             });
 
-            if (!product_variant || !product_variant.Product) {
-                return res.status(400).send("Không thể tìm thấy thông tin sản phẩm cho Stripe");
+            if (!product_variant || !product_variant.Product || !product_variant.Product.Product_Price_Histories[0]) {
+                return res.status(400).send("Không thể lấy thông tin sản phẩm");
             }
 
-            const product_name = product_variant.Product.product_name;
-            const quantity = order_item.quantity;
+            if (product_variant.state != true)
+                return res.status(400).send("Sản phẩm này chưa được mở bán");
+
+            if (order_item.quantity > product_variant.quantity)
+                return res.status(400).send("Số lượng sản phẩm không hợp lệ");
+
+            const productVariantPrice = parseInt(product_variant.Product.Product_Price_Histories[0].price);
+            const quantity = parseInt(order_item.quantity);
+            const total_value = productVariantPrice * quantity;
+
+            const newOrderItem = {
+                order_id: newOrder.order_id,
+                product_variant_id: product_variant.product_variant_id,
+                order_item_index: i,
+                price: productVariantPrice,
+                quantity,
+                total_value,
+            };
+
+            await Order_Item.create(newOrderItem);
+            await product_variant.update({
+                quantity: product_variant.quantity - quantity,
+            });
+
+            total_product_value += total_value;
 
             line_items.push({
                 price_data: {
                     currency: "vnd",
-                    unit_amount: Math.round(total_product_value),
+                    unit_amount: productVariantPrice,
                     product_data: {
-                        name: product_name,
+                        name: product_variant.Product.product_name,
                     },
                 },
                 quantity: quantity,
             });
         }
+
+        const total_order_value = total_product_value;
+
+        await newOrder.update({ total_product_value, total_order_value });
 
         const customer = await stripe.customers.create({
             email
@@ -129,7 +122,15 @@ let create = async (req, res, next) => {
             line_items: line_items,
             mode: 'payment',
             success_url: `${process.env.FRONTEND_URL}/get-order/${newOrder.order_id}`,
-            cancel_url: `${process.env.FRONTEND_URL}/cart`
+            cancel_url: `${process.env.FRONTEND_URL}/cart`,
+            metadata: {
+                customer_name,
+                email,
+                phone_number,
+                address,
+                order_items: JSON.stringify(order_items),
+                user_id
+            }
         })
 
         let state = await Order_State.findOne({ where: { state_id: 1, state_name: "Chờ Xác Nhận" } });
