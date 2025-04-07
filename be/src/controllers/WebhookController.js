@@ -97,12 +97,10 @@ let handleWebhook = async (req, res, next) => {
                 total_product_value += total_value;
             }
 
-            const delivery_charges = 20000;
-            const total_order_value = total_product_value + delivery_charges;
+            const total_order_value = total_product_value;
 
             await newOrder.update({
                 total_product_value,
-                delivery_charges,
                 total_order_value,
             });
 

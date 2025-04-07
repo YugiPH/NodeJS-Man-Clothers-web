@@ -83,18 +83,6 @@ const OrderDetailPage = () => {
             } catch (error) {
                 console.log(error);
                 router.push('/404');
-                // setOrderId(fakeOrderDetail.order_id);
-                // setStateName(fakeOrderDetail.state_name);
-                // setStateId(fakeOrderDetail.state_id);
-                // setCreatedAt(fakeOrderDetail.created_at);
-                // setOrderItems(fakeOrderDetail.order_items);
-                // setTotalProductValue(fakeOrderDetail.total_product_value);
-                // setDeliveryCharges(fakeOrderDetail.delivery_charges);
-                // setTotalOrderValue(fakeOrderDetail.total_order_value);
-                // setCustomerName(fakeOrderDetail.customer_name);
-                // setEmail(fakeOrderDetail.email);
-                // setPhoneNumber(fakeOrderDetail.phone_number);
-                // setAddress(fakeOrderDetail.address);
             }
         };
         if (order_id) {
@@ -165,10 +153,6 @@ const OrderDetailPage = () => {
                             <p>
                                 Số điện thoại:
                                 <strong>{' ' + phoneNumber}</strong>
-                            </p>
-                            <p>
-                                Hình thức thanh toán:
-                                <strong>{' ' + 'COD'}</strong>
                             </p>
                             <p>
                                 Địa chỉ giao hàng:

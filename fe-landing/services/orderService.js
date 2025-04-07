@@ -19,6 +19,10 @@ const orderService = {
         return await axiosJWT.post('/payment/create', data);
     },
 
+    checkSession: async (session_id) => {
+        return await axiosJWT.get(`/check-session?session_id=${session_id}`)
+    },
+
     cancelOrder: async (orderId) => {
         return await axiosClient.put(`/order/change-status/${orderId}/5`);
     },

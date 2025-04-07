@@ -31,21 +31,6 @@ let create = async (req, res, next) => {
     const { customer_name, email, phone_number, address, order_items } = req.body
 
     try {
-        let order_id = orderid.generate().replace(/-/g, "");
-        const newOrder = await Order.create({
-            user_id,
-            order_id,
-            customer_name,
-            email,
-            phone_number,
-            address,
-            total_product_value: 0,
-            delivery_charges: 0,
-            total_order_value: 0,
-        });
-
-        let total_product_value = 0;
-
         let line_items = [];
 
         for (let i = 0; i < order_items.length; i++) {
@@ -78,23 +63,6 @@ let create = async (req, res, next) => {
 
             const productVariantPrice = parseInt(product_variant.Product.Product_Price_Histories[0].price);
             const quantity = parseInt(order_item.quantity);
-            const total_value = productVariantPrice * quantity;
-
-            const newOrderItem = {
-                order_id: newOrder.order_id,
-                product_variant_id: product_variant.product_variant_id,
-                order_item_index: i,
-                price: productVariantPrice,
-                quantity,
-                total_value,
-            };
-
-            await Order_Item.create(newOrderItem);
-            await product_variant.update({
-                quantity: product_variant.quantity - quantity,
-            });
-
-            total_product_value += total_value;
 
             line_items.push({
                 price_data: {
@@ -108,10 +76,6 @@ let create = async (req, res, next) => {
             });
         }
 
-        const total_order_value = total_product_value;
-
-        await newOrder.update({ total_product_value, total_order_value });
-
         const customer = await stripe.customers.create({
             email
         })
@@ -121,7 +85,7 @@ let create = async (req, res, next) => {
             payment_method_types: ['card'],
             line_items: line_items,
             mode: 'payment',
-            success_url: `${process.env.FRONTEND_URL}/get-order/${newOrder.order_id}`,
+            success_url: `${process.env.FRONTEND_URL}/account/orders?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${process.env.FRONTEND_URL}/cart`,
             metadata: {
                 customer_name,
@@ -132,9 +96,6 @@ let create = async (req, res, next) => {
                 user_id
             }
         })
-
-        let state = await Order_State.findOne({ where: { state_id: 1, state_name: "Chờ Xác Nhận" } });
-        await newOrder.addOrder_State(state);
         return res.send({ url: session.url })
     } catch (err) {
         console.log(err);

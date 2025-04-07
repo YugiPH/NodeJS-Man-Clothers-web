@@ -62,6 +62,7 @@ const CartPage = () => {
                     const { data } = await orderService.placeOrder(order);
                     if (data) {
                         swtoast.success({ text: 'Đặt hàng thành công' });
+                        clearCart()
                     }
                 }
                 else {
@@ -76,9 +77,6 @@ const CartPage = () => {
                 swtoast.error({
                     text: 'Có lỗi khi tạo đơn hàng vui lòng thử lại!'
                 });
-            }
-            finally {
-                clearCart()
             }
         } else {
             swtoast.error({

@@ -6,6 +6,7 @@ require('dotenv').config();
 const db = require('./configs/database');
 const setRouter = require('./routes/index');
 const { createRecordsDefault } = require('./configs/createRecordsDefault');
+const { handleWebhook } = require('../src/controllers/WebhookController')
 
 const server = express();
 const port = 8080;
@@ -15,6 +16,9 @@ const corsOptions = {
   origin: true,
   credentials: true,
 };
+
+server.post('/api/webhook', express.raw({ type: 'application/json' }), handleWebhook);
+
 server.use(cors(corsOptions));
 server.use(cookieParser());
 server.use(express.json());
@@ -22,6 +26,8 @@ server.use(express.urlencoded({ extended: true }));
 server.use('/static', express.static('./src/public'));
 
 setRouter(server);
+
+
 
 (async () => {
   await db.connect();
