@@ -20,7 +20,7 @@ export default function HomePage() {
                             chạy bộ chuyên nghiệp
                         </p>
                         <div>
-                            <Link href="http://localhost:3001/product/1?colour=7">
+                            <Link href="http://localhost:3001/product/9?colour=8">
                                 <button>Khám phá ngay</button>
                             </Link>
                         </div>
@@ -50,9 +50,9 @@ export default function HomePage() {
                         <div className="homepage-brands-img position-relative">
                             <Image src={'/img/homepage/homepageBrandsRight.jpg'} fill alt="homepage-brands-right" />
                             <div className="homepage-brands-content position-absolute">
-                                <h2>CM24</h2>
+                                <h2>Áo của quý ông</h2>
                                 <p>
-                                    Thương hiệu chăm sóc cá nhân dành cho nam giới bởi Coolmate
+                                    Những chiếc áo sơ mi sang trọng đang chờ đón
                                 </p>
                                 <div>
                                     <button className="border-radius fw-bold">Khám phá ngay</button>

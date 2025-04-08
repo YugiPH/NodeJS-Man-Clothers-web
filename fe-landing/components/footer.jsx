@@ -9,7 +9,6 @@ const Footer = () => {
                         <h4>ELEVENT lắng nghe bạn!</h4>
                         <p>Chúng tôi luôn trân trọng và mong đợi nhận được mọi ý kiến đóng góp từ
                             khách hàng để có thể nâng cấp trải nghiệm dịch vụ và sản phẩm tốt hơn nữa.</p>
-                        <a href='#'>Đóng góp ý kiến</a >
                     </div>
                     <div className="footer-contact col-lg-4 px-lg-2">
                         <div className='d-flex justify-content-lg-center'>

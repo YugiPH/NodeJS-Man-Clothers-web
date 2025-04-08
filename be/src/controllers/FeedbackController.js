@@ -55,13 +55,35 @@ let create = async (req, res, next) => {
         // Cập nhật Rating của Product
         let product = await productVariant.getProduct();
         let product_id = product.product_id;
+
+        // Cập nhật lại truy vấn để group tất cả cột liên quan
         let result = await Feedback.findAll({
             attributes: [
                 [Sequelize.fn('avg', Sequelize.col('rate')), 'avg'],
-                [Sequelize.fn('count', Sequelize.col('rate')), 'count']
+                [Sequelize.fn('count', Sequelize.col('rate')), 'count'],
+                'product_variant.product_variant_id',
+                'product_variant.quantity',
+                'product_variant.state',
+                'product_variant.created_at',
+                'product_variant.deleted_at',
+                'product_variant.product_id',
+                'product_variant.colour_id',
+                'product_variant.size_id',
             ],
-            include: { model: Product_Variant, where: { product_id } },
-            group: ['product_variant.product_id']
+            include: {
+                model: Product_Variant,
+                where: { product_id }
+            },
+            group: [
+                'product_variant.product_id',
+                'product_variant.product_variant_id',
+                'product_variant.quantity',
+                'product_variant.state',
+                'product_variant.created_at',
+                'product_variant.deleted_at',
+                'product_variant.colour_id',
+                'product_variant.size_id',
+            ]
         });
 
         // Kiểm tra nếu không có dữ liệu feedback
@@ -77,6 +99,7 @@ let create = async (req, res, next) => {
         return res.status(500).send('Gặp lỗi khi tải dữ liệu, vui lòng thử lại');
     }
 };
+
 
 let update = async (req, res, next) => {
     try {
@@ -96,13 +119,19 @@ let update = async (req, res, next) => {
         let product = await productVariant.getProduct();
         let product_id = product.product_id;
 
+        // Cập nhật lại truy vấn để group tất cả cột liên quan
         let result = await Feedback.findAll({
             attributes: [
                 [Sequelize.fn('avg', Sequelize.col('rate')), 'avg'],
-                [Sequelize.fn('count', Sequelize.col('rate')), 'count']
+                [Sequelize.fn('count', Sequelize.col('rate')), 'count'],
+                'product_variant.product_variant_id',
+                'product_variant.quantity',
+                'product_variant.state',
+                'product_variant.created_at',
+                'product_variant.deleted_at'
             ],
             include: [{ model: Product_Variant, where: { product_id } }],
-            group: ['product_variant.product_id']
+            group: ['product_variant.product_variant_id', 'product_variant.product_variant_id', 'product_variant.quantity', 'product_variant.state', 'product_variant.created_at', 'product_variant.deleted_at']  // Thêm vào đây
         });
 
         if (!result || result.length === 0) return res.send({ message: 'Cập nhật feedback thành công!' });
@@ -117,6 +146,7 @@ let update = async (req, res, next) => {
         return res.status(500).send('Gặp lỗi khi tải dữ liệu, vui lòng thử lại');
     }
 };
+
 
 let detail = async (req, res, next) => {
     try {
