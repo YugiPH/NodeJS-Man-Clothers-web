@@ -54,8 +54,8 @@ const Footer = () => {
                 </div>
                 <div className="footer-after row g-0 pt-3">
                     <div className="copyright col col-lg-8 pe-1">
-                        <h5 className='copyright-title'>@ CÔNG TY TNHH NASTECH ASIA</h5>
-                        <p className='copyright-description'>Mã số doanh nghiệp: 0108116083. Giấy chứng nhận đăng ký doanh nghiệp do Sở Kế hoạch và Đầu tư TP Cần Thơ cấp lần đầu ngày 21/03/2017.</p>
+                        <h5 className='copyright-title'>@ CÔNG TY CỔ PHẦN THE FIRST ONE</h5>
+                        <p className='copyright-description'>Mã số doanh nghiệp: 0108235920. Giấy chứng nhận đăng ký doanh nghiệp do Sở Kế hoạch và Đầu tư TP Hà Nội cấp lần đầu ngày 17/04/2018.</p>
                     </div>
                     <div className="logo col col-lg-4 d-flex justify-content-end ps-1">
                         <div className="logo-item d-inline me-3">

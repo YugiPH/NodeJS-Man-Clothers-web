@@ -1,5 +1,6 @@
 import Slider from '@/components/slider';
 import { ArrowUpOutlined } from '@ant-design/icons';
+import { Color } from 'antd/es/color-picker';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -48,15 +49,12 @@ export default function HomePage() {
                     </div>
                     <div className="col">
                         <div className="homepage-brands-img position-relative">
-                            <Image src={'/img/homepage/homepageBrandsRight.jpg'} fill alt="homepage-brands-right" />
-                            <div className="homepage-brands-content position-absolute">
-                                <h2>Áo của quý ông</h2>
-                                <p>
-                                    Những chiếc áo sơ mi sang trọng đang chờ đón
+                            <Image src={'/img/homepage/homepageBrandsRight.png'} fill alt="homepage-brands-right" />
+                            <div className="homepage-brands-content position-absolute" >
+                                <h2 style={{ color: 'white' }}>Sắp ra mắt</h2>
+                                <p style={{ color: 'white' }}>
+                                    Hãy đón chờ trong thời gian tới
                                 </p>
-                                <div>
-                                    <button className="border-radius fw-bold">Khám phá ngay</button>
-                                </div>
                             </div>
                         </div>
                     </div>
