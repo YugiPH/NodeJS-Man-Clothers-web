@@ -102,8 +102,8 @@ const Header = () => {
                             );
                         })}
                 </ul>
-                
-                <SearchBar/>
+
+                {/* <SearchBar/> */}
 
                 <ul className="header-inner p-2 ms-auto">
                     {!isLoggedIn ? (

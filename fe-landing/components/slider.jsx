@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 const slideList = [
     {
-        src: '/img/homepage/slide_01.jpg',
+        src: '/img/homepage/slide_01.png',
         alt: 'slide_01'
     },
     {
